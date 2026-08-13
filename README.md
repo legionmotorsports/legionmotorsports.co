@@ -1,2 +1,348 @@
 # legionmotorsports.co
 Website
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legion Motorsports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700;1,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal: #0a0a0a;
+    --charcoal-2: #151515;
+    --steel: #232323;
+    --steel-line: #333333;
+    --orange: #e31e24;
+    --yellow: #ffffff;
+    --off-white: #f2f2f0;
+    --off-white-dim: #918f8c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--charcoal);
+    color: var(--off-white);
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3, .display{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700;
+    font-style:italic;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  img{max-width:100%; display:block;}
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px; }
+
+  /* diagonal hazard texture used sparingly as a divider accent */
+  .hazard-strip{
+    height:10px;
+    background: repeating-linear-gradient(135deg, var(--yellow) 0 18px, var(--charcoal) 18px 36px);
+  }
+
+  /* ===== NAV ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background: rgba(26,29,31,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--steel-line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px; max-width:1180px; margin:0 auto;
+  }
+  .logo{
+    font-family:'Barlow Condensed'; font-weight:800; font-style:italic; font-size:1.5rem;
+    letter-spacing:0.01em; text-transform:uppercase;
+    display:flex; align-items:baseline; gap:2px;
+  }
+  .logo .lm-l{ color:var(--orange); }
+  .logo .lm-m{ color:var(--off-white); }
+  .logo .tag{
+    font-family:'Barlow Condensed'; font-style:italic; font-weight:700; font-size:1rem;
+    color:var(--orange); letter-spacing:0.02em; margin-left:6px;
+  }
+  .nav-links{ display:flex; gap:32px; font-size:0.85rem; font-weight:500; text-transform:uppercase; letter-spacing:0.04em;}
+  .nav-links a{ color:var(--off-white-dim); transition:color .15s; }
+  .nav-links a:hover{ color:var(--orange); }
+  .nav-cta{
+    background:var(--orange); color:var(--charcoal);
+    padding:10px 20px; font-weight:600; font-size:0.82rem;
+    text-transform:uppercase; letter-spacing:0.04em;
+    border:none; cursor:pointer;
+  }
+  @media(max-width:760px){ .nav-links{display:none;} }
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:90px 28px 70px;
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:50px; align-items:center;
+  }
+  @media(max-width:900px){ .hero{grid-template-columns:1fr; padding-top:56px;} }
+  .eyebrow{
+    font-family:'JetBrains Mono'; font-size:0.78rem; color:var(--yellow);
+    letter-spacing:0.08em; margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{ content:''; width:26px; height:2px; background:var(--yellow); display:inline-block;}
+  .hero h1{
+    font-size:3.6rem; line-height:1.02; font-weight:700; margin-bottom:22px;
+  }
+  @media(max-width:900px){ .hero h1{font-size:2.5rem;} }
+  .hero h1 .accent{ color:var(--orange); }
+  .hero p{ color:var(--off-white-dim); font-size:1.05rem; max-width:480px; margin-bottom:34px; }
+  .btn-row{ display:flex; gap:16px; flex-wrap:wrap; }
+  .btn-primary{
+    background:var(--orange); color:var(--charcoal); padding:15px 28px;
+    font-weight:600; text-transform:uppercase; letter-spacing:0.04em; font-size:0.88rem;
+    border:none; cursor:pointer;
+  }
+  .btn-secondary{
+    background:transparent; color:var(--off-white); padding:15px 28px;
+    font-weight:600; text-transform:uppercase; letter-spacing:0.04em; font-size:0.88rem;
+    border:1px solid var(--steel-line); cursor:pointer;
+  }
+  .btn-secondary:hover{ border-color:var(--orange); color:var(--orange); }
+
+  /* signature element: a "build tag" — like a torn parts/shipping tag */
+  .build-tag{
+    background:var(--charcoal-2);
+    border:1px solid var(--steel-line);
+    padding:0;
+    position:relative;
+    clip-path: polygon(0 12%, 12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%);
+  }
+  .build-tag-inner{ padding:26px 28px; }
+  .build-tag .hole{
+    position:absolute; top:20px; right:20px;
+    width:14px; height:14px; border-radius:50%;
+    background:var(--charcoal); border:1px solid var(--steel-line);
+  }
+  .build-tag-label{ font-family:'JetBrains Mono'; font-size:0.68rem; color:var(--yellow); letter-spacing:0.08em; margin-bottom:14px;}
+  .build-tag-row{
+    display:flex; justify-content:space-between; padding:9px 0;
+    border-bottom:1px dashed var(--steel-line);
+    font-size:0.85rem;
+  }
+  .build-tag-row:last-child{ border-bottom:none; }
+  .build-tag-row .k{ color:var(--off-white-dim); }
+  .build-tag-row .v{ font-family:'JetBrains Mono'; color:var(--off-white); }
+
+  /* ===== SECTION HEADERS ===== */
+  .section{ padding:80px 28px; }
+  .section-head{ max-width:1180px; margin:0 auto 44px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; }
+  .section-head h2{ font-size:2.1rem; font-weight:600; }
+  .section-head p{ color:var(--off-white-dim); max-width:420px; font-size:0.95rem; }
+  .section-num{ font-family:'JetBrains Mono'; color:var(--steel-line); font-size:0.9rem; }
+
+  /* ===== CATEGORY GRID (parts/gear) ===== */
+  .cat-grid{ max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:var(--steel-line);}
+  @media(max-width:900px){ .cat-grid{grid-template-columns:repeat(2,1fr);} }
+  .cat-card{
+    background:var(--charcoal-2); padding:32px 24px; min-height:190px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    transition:background .15s;
+  }
+  .cat-card:hover{ background:var(--steel); }
+  .cat-card .cat-index{ font-family:'JetBrains Mono'; font-size:0.72rem; color:var(--orange); }
+  .cat-card h3{ font-size:1.15rem; font-weight:600; margin-top:22px; }
+  .cat-card span.desc{ display:block; margin-top:8px; color:var(--off-white-dim); font-size:0.82rem; text-transform:none; letter-spacing:0; font-family:'Inter';}
+
+  /* ===== MARKETPLACE TEASER ===== */
+  .marketplace{
+    background:var(--charcoal-2);
+    border-top:1px solid var(--steel-line);
+    border-bottom:1px solid var(--steel-line);
+  }
+  .mp-wrap{ max-width:1180px; margin:0 auto; padding:80px 28px; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+  @media(max-width:900px){ .mp-wrap{grid-template-columns:1fr;} }
+  .mp-wrap h2{ font-size:2.1rem; margin-bottom:18px; }
+  .mp-wrap p{ color:var(--off-white-dim); margin-bottom:26px; max-width:460px; }
+  .zip-demo{
+    background:var(--charcoal); border:1px solid var(--steel-line); padding:26px;
+  }
+  .zip-demo-label{ font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--yellow); letter-spacing:0.06em; margin-bottom:14px;}
+  .zip-input-row{ display:flex; gap:10px; margin-bottom:20px; }
+  .zip-input-row input{
+    flex:1; background:var(--charcoal-2); border:1px solid var(--steel-line); color:var(--off-white);
+    padding:12px 14px; font-family:'JetBrains Mono'; font-size:0.9rem;
+  }
+  .zip-input-row button{
+    background:var(--orange); color:var(--charcoal); border:none; padding:0 18px;
+    font-weight:600; text-transform:uppercase; font-size:0.78rem; letter-spacing:0.03em; cursor:pointer;
+  }
+  .listing-row{ display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid var(--steel-line); font-size:0.85rem;}
+  .listing-row .dist{ color:var(--off-white-dim); font-family:'JetBrains Mono'; font-size:0.78rem;}
+
+  /* ===== YOUTUBE TIE-IN ===== */
+  .yt{ max-width:1180px; margin:0 auto; padding:80px 28px; display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
+  @media(max-width:900px){ .yt{grid-template-columns:1fr;} }
+  .yt-embed{
+    aspect-ratio:16/10; background:var(--steel); border:1px solid var(--steel-line);
+    overflow:hidden;
+  }
+  .yt-embed iframe{ width:100%; height:100%; border:0; display:block; }
+  .yt h2{ font-size:2.1rem; margin-bottom:16px; }
+  .yt p{ color:var(--off-white-dim); margin-bottom:24px; max-width:480px; }
+
+  /* ===== FOOTER ===== */
+  footer{ border-top:1px solid var(--steel-line); padding:40px 28px; }
+  .footer-wrap{ max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; align-items:center;}
+  .footer-wrap .mono{ color:var(--off-white-dim); font-size:0.78rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="lm-l">L</span><span class="lm-m">M</span> <span class="tag">LEGION MOTORSPORTS</span></div>
+    <div class="nav-links">
+      <a href="#parts">Parts</a>
+      <a href="#gear">Gear</a>
+      <a href="#marketplace">Marketplace</a>
+      <a href="#youtube">Channel</a>
+    </div>
+    <button class="nav-cta">Shop Now</button>
+  </nav>
+</header>
+
+<div class="hazard-strip"></div>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">BUILT FOR THE ROAD.</div>
+    <h1>Ready for <span class="accent">any challenge.</span></h1>
+    <p>Belts, filters, oil, and gear for Can-Am, side-by-sides, jetskis, and quads — shipped fast, priced fair. Plus a marketplace to buy and sell used machines near you.</p>
+    <div class="btn-row">
+      <button class="btn-primary">Shop Parts &amp; Gear</button>
+      <button class="btn-secondary">Browse Marketplace</button>
+    </div>
+  </div>
+  <div class="build-tag">
+    <div class="build-tag-inner">
+      <div class="hole"></div>
+      <div class="build-tag-label">// SAMPLE BUILD SHEET</div>
+      <div class="build-tag-row"><span class="k">Item</span><span class="v">Maverick X3 Belt</span></div>
+      <div class="build-tag-row"><span class="k">Fitment</span><span class="v">2020–2026</span></div>
+      <div class="build-tag-row"><span class="k">Ships</span><span class="v">1–2 Days</span></div>
+      <div class="build-tag-row"><span class="k">Price</span><span class="v">$149.00</span></div>
+      <div class="build-tag-row"><span class="k">Status</span><span class="v" style="color:var(--yellow);">IN STOCK</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="parts">
+  <div class="section-head">
+    <div>
+      <h2>Shop by category</h2>
+      <p>Start with what wears out first — the parts that keep you on the trail, not in the shop.</p>
+    </div>
+    <div class="section-num">01 / CATALOG</div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card">
+      <span class="cat-index">P-01</span>
+      <div>
+        <h3>Belts</h3>
+        <span class="desc">Can-Am, Polaris &amp; UTV drive belts</span>
+      </div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-index">P-02</span>
+      <div>
+        <h3>Oil &amp; Fluids</h3>
+        <span class="desc">Motul, Maxima, XPS synthetic</span>
+      </div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-index">P-03</span>
+      <div>
+        <h3>Filters</h3>
+        <span class="desc">Oil &amp; air filters, OEM equivalent</span>
+      </div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-index">P-04</span>
+      <div>
+        <h3>Chains &amp; Sprockets</h3>
+        <span class="desc">Dirt bike &amp; ATV drivetrain</span>
+      </div>
+    </div>
+    <div class="cat-card" id="gear">
+      <span class="cat-index">G-01</span>
+      <div>
+        <h3>Goggles</h3>
+        <span class="desc">Anti-fog, multiple tints</span>
+      </div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-index">G-02</span>
+      <div>
+        <h3>Gloves</h3>
+        <span class="desc">Off-road riding gloves, S–XXL</span>
+      </div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-index">P-05</span>
+      <div>
+        <h3>Jetski Parts</h3>
+        <span class="desc">Impellers, wear rings, SeaDoo</span>
+      </div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-index">--</span>
+      <div>
+        <h3>Full Catalog</h3>
+        <span class="desc">Browse everything in stock</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="marketplace" id="marketplace">
+  <div class="mp-wrap">
+    <div>
+      <div class="eyebrow">LOCAL &amp; PEER-TO-PEER</div>
+      <h2>Buy &amp; sell near you</h2>
+      <p>Selling an old engine block, a jetski you don't ride anymore, or a whole quad? List it by zip code and connect with riders nearby — no shipping required.</p>
+      <button class="btn-primary">Start a Listing</button>
+    </div>
+    <div class="zip-demo">
+      <div class="zip-demo-label">// FIND LISTINGS NEAR YOU</div>
+      <div class="zip-input-row">
+        <input type="text" placeholder="Enter zip code" value="08723" readonly>
+        <button>Search</button>
+      </div>
+      <div class="listing-row"><span>2019 SeaDoo GTX — Runs great</span><span class="dist">4.2 mi</span></div>
+      <div class="listing-row"><span>Can-Am Rotax engine block</span><span class="dist">7.8 mi</span></div>
+      <div class="listing-row"><span>Honda CRF250 — Needs clutch</span><span class="dist">11.1 mi</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="yt" id="youtube">
+  <div class="yt-embed">
+    <iframe src="https://www.youtube.com/embed/videoseries?list=UUvERCya_pQ8K97DobmCOqNQ" title="Latest Legion Motorsports video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <div>
+    <div class="eyebrow">THE CHANNEL</div>
+    <h2>Watch it get rebuilt on Legion Motorsports</h2>
+    <p>Every teardown, repair, and flip lands on YouTube first — see the parts in this store get used in the builds you're watching.</p>
+    <a href="https://www.youtube.com/@Legionmotorsports" target="_blank" class="btn-secondary" style="display:inline-block;">Watch on YouTube</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-wrap">
+    <div class="logo" style="font-size:1.1rem;"><span class="lm-l">L</span><span class="lm-m">M</span> <span class="tag">LEGION MOTORSPORTS</span></div>
+    <span class="mono">legionmotorsports.co — Brick, NJ</span>
+  </div>
+</footer>
+
+</body>
+</html>
