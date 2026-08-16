@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Legion Motorsports — Marketplace Prototype</title>
+<title>Legion Motorsports — Marketplace</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700;1,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -14,15 +14,16 @@
   body{ background:var(--charcoal); color:var(--off-white); font-family:'Inter',sans-serif; padding:40px 20px; }
   h1,h2,h3{ font-family:'Barlow Condensed'; font-weight:700; font-style:italic; text-transform:uppercase; letter-spacing:0.01em; }
   .mono{ font-family:'JetBrains Mono', monospace; }
-  .wrap{ max-width:920px; margin:0 auto; }
-  .badge{ display:inline-block; background:var(--red); color:var(--white); font-family:'JetBrains Mono'; font-size:0.65rem; padding:3px 8px; letter-spacing:0.06em; margin-bottom:10px; }
-  .page-title{ font-size:2rem; margin-bottom:6px; }
-  .page-sub{ color:var(--off-white-dim); font-size:0.9rem; margin-bottom:36px; }
+  .wrap{ max-width:960px; margin:0 auto; }
+  a{ color:var(--red); }
+  .top-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; flex-wrap:wrap; gap:10px; }
+  .page-title{ font-size:2rem; }
+  #authStatus{ font-family:'JetBrains Mono'; font-size:0.8rem; color:var(--off-white-dim); }
+  #authStatus button{ background:none; border:1px solid var(--steel-line); color:var(--off-white); padding:6px 12px; margin-left:10px; cursor:pointer; font-family:'Inter'; font-size:0.78rem; }
 
   .tabs{ display:flex; gap:2px; margin-bottom:28px; background:var(--steel-line); }
   .tab{ flex:1; text-align:center; padding:14px; background:var(--charcoal-2); font-family:'Barlow Condensed'; font-weight:700; font-style:italic; text-transform:uppercase; letter-spacing:0.02em; cursor:pointer; color:var(--off-white-dim); font-size:1rem; }
   .tab.active{ background:var(--charcoal); color:var(--red); }
-
   .panel{ display:none; }
   .panel.active{ display:block; }
 
@@ -31,7 +32,7 @@
 
   label{ display:block; font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--red); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:8px; margin-top:18px; }
   label:first-of-type{ margin-top:0; }
-  input[type=text], input[type=email], input[type=password], input[type=tel], select, textarea{
+  input, select, textarea{
     width:100%; background:var(--charcoal); border:1px solid var(--steel-line); color:var(--off-white);
     padding:12px 14px; font-family:'Inter'; font-size:0.92rem;
   }
@@ -41,156 +42,151 @@
 
   .btn{ background:var(--red); color:var(--white); border:none; padding:14px 26px; font-weight:600;
     text-transform:uppercase; letter-spacing:0.04em; font-size:0.85rem; cursor:pointer; margin-top:24px; }
-  .btn-outline{ background:transparent; border:1px solid var(--steel-line); color:var(--off-white); }
-
+  .btn-outline{ background:transparent; border:1px solid var(--steel-line); color:var(--off-white); margin-left:10px; }
   .helper{ font-size:0.78rem; color:var(--off-white-dim); margin-top:6px; }
+  .error{ color:var(--red); font-size:0.82rem; margin-top:10px; }
+  .success{ color:#6fbf73; font-size:0.82rem; margin-top:10px; }
 
-  /* photo upload dropzone */
-  .dropzone{
-    border:2px dashed var(--steel-line); background:var(--charcoal); padding:40px 20px;
-    text-align:center; margin-top:8px; cursor:pointer;
-  }
-  .dropzone:hover{ border-color:var(--red); }
-  .dropzone .icon{ font-size:1.8rem; color:var(--red); margin-bottom:10px; }
-  .dropzone .main{ font-weight:600; font-size:0.9rem; margin-bottom:4px; }
-  .dropzone .sub{ font-size:0.78rem; color:var(--off-white-dim); }
-  .photo-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:14px; }
-  .photo-slot{ aspect-ratio:1; background:var(--steel); border:1px solid var(--steel-line); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--off-white-dim); }
-  .photo-slot.filled{ background:linear-gradient(135deg, #3a3a3a, #262626); color:var(--off-white); }
+  .listing-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:16px; }
+  .listing-card{ background:var(--charcoal-2); border:1px solid var(--steel-line); padding:16px; cursor:pointer; }
+  .listing-card:hover{ border-color:var(--red); }
+  .listing-card .thumb{ aspect-ratio:4/3; background:var(--steel); margin-bottom:10px; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--off-white-dim); overflow:hidden; }
+  .listing-card .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .listing-card .title{ font-weight:600; font-size:0.92rem; margin-bottom:4px; }
+  .listing-card .price{ color:var(--red); font-family:'JetBrains Mono'; font-weight:700; }
+  .listing-card .meta{ font-size:0.75rem; color:var(--off-white-dim); margin-top:4px; }
 
-  /* contact preference block */
   .contact-pref{ background:var(--charcoal); border:1px solid var(--steel-line); padding:20px; margin-top:20px; }
-  .contact-pref .note{ font-size:0.78rem; color:var(--off-white-dim); margin-top:10px; line-height:1.5; }
   .radio-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:0.9rem; }
   .radio-row input{ width:auto; accent-color:var(--red); }
 
-  /* message thread mockup */
-  .thread{ background:var(--charcoal); border:1px solid var(--steel-line); padding:20px; margin-top:10px; }
+  .thread{ background:var(--charcoal); border:1px solid var(--steel-line); padding:20px; margin-top:10px; max-height:340px; overflow-y:auto; }
   .msg{ max-width:75%; padding:10px 14px; margin-bottom:10px; font-size:0.85rem; }
   .msg.them{ background:var(--steel); }
   .msg.me{ background:var(--red); color:var(--white); margin-left:auto; }
   .msg-meta{ font-family:'JetBrains Mono'; font-size:0.65rem; color:var(--off-white-dim); margin-bottom:4px; }
 
-  .zip-badge{ display:inline-flex; align-items:center; gap:6px; background:var(--charcoal); border:1px solid var(--steel-line); padding:6px 12px; font-family:'JetBrains Mono'; font-size:0.78rem; margin-top:6px;}
+  .hidden{ display:none !important; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <span class="badge">PROTOTYPE — NOT FUNCTIONAL YET</span>
-  <div class="page-title">Marketplace Sign-Up &amp; Listing Flow</div>
-  <div class="page-sub">A first look at how sellers create an account, upload photos, and message buyers — all in-platform, no personal contact info exposed.</div>
-
-  <div class="tabs">
-    <div class="tab active" data-panel="signup">1. Create Account</div>
-    <div class="tab" data-panel="listing">2. Create Listing</div>
-    <div class="tab" data-panel="messages">3. Messages</div>
+  <div class="top-row">
+    <div class="page-title">Marketplace</div>
+    <div id="authStatus">Loading...</div>
   </div>
 
-  <!-- PANEL 1: SIGN UP -->
-  <div class="panel active" id="signup">
+  <div class="tabs">
+    <div class="tab active" data-panel="browse">Browse</div>
+    <div class="tab" data-panel="account">Account</div>
+    <div class="tab" data-panel="listing">Create Listing</div>
+    <div class="tab" data-panel="messages">Messages</div>
+  </div>
+
+  <div class="panel active" id="browse">
     <div class="card">
-      <h2>Create your seller account</h2>
-      <label>Full Name</label>
-      <input type="text" placeholder="Brandon Gonzalez">
+      <h2>Browse listings</h2>
+      <div id="listingGrid" class="listing-grid">
+        <div class="helper">Loading listings...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="account">
+    <div class="card" id="loggedOutView">
+      <h2>Log in or create an account</h2>
       <label>Email</label>
-      <input type="email" placeholder="you@example.com">
-      <div class="helper">Used for login &amp; account notifications only — never shown publicly on your listings.</div>
-      <label>Phone Number <span style="color:var(--off-white-dim); text-transform:none; font-family:'Inter';">(optional)</span></label>
-      <input type="tel" placeholder="(555) 555-5555">
-      <div class="helper">Only used for account recovery, unless you choose to share it with a specific buyer later.</div>
+      <input type="email" id="authEmail" placeholder="you@example.com">
+      <label>Password</label>
+      <input type="password" id="authPassword" placeholder="••••••••">
+      <button class="btn" id="loginBtn">Log In</button>
+      <button class="btn btn-outline" id="signupBtn">Create Account</button>
+      <div id="authMsg"></div>
+    </div>
+    <div class="card hidden" id="loggedInView">
+      <h2>Your profile</h2>
+      <label>Full Name</label>
+      <input type="text" id="profileName">
       <div class="row2">
         <div>
           <label>Zip Code</label>
-          <input type="text" placeholder="08723">
-          <div class="helper">Shown publicly so buyers know roughly where your item is — exact address is never shown.</div>
+          <input type="text" id="profileZip" placeholder="08723">
         </div>
         <div>
-          <label>Password</label>
-          <input type="password" placeholder="••••••••">
+          <label>Phone <span style="color:var(--off-white-dim); text-transform:none; font-family:'Inter';">(optional)</span></label>
+          <input type="tel" id="profilePhone">
         </div>
       </div>
-      <button class="btn">Create Account</button>
+      <button class="btn" id="saveProfileBtn">Save Profile</button>
+      <div id="profileMsg"></div>
     </div>
   </div>
 
-  <!-- PANEL 2: CREATE LISTING -->
   <div class="panel" id="listing">
     <div class="card">
-      <h2>List an item</h2>
-      <label>Item Title</label>
-      <input type="text" placeholder="2019 SeaDoo GTX — Runs Great">
-      <div class="row2">
-        <div>
-          <label>Category</label>
-          <select><option>Jetski</option><option>Motorcycle / Dirt Bike</option><option>Snowmobile</option><option>Side-by-Side / UTV</option><option>ATV / Quad</option><option>Boat</option><option>Engine Block</option><option>Transmission</option><option>Other Part</option></select>
+      <h2 id="listingFormTitle">List an item</h2>
+      <div id="listingLoggedOutNotice" class="helper">You need to log in before creating a listing — go to the Account tab first.</div>
+      <div id="listingForm" class="hidden">
+        <label>Item Title</label>
+        <input type="text" id="listTitle" placeholder="2019 SeaDoo GTX — Runs Great">
+        <div class="row2">
+          <div>
+            <label>Category</label>
+            <select id="listCategory">
+              <option>Jetski</option><option>Motorcycle / Dirt Bike</option><option>Snowmobile</option>
+              <option>Side-by-Side / UTV</option><option>ATV / Quad</option><option>Boat</option>
+              <option>Engine Block</option><option>Transmission</option><option>Other Part</option>
+            </select>
+          </div>
+          <div>
+            <label>Price ($)</label>
+            <input type="number" id="listPrice" placeholder="6500">
+          </div>
         </div>
-        <div>
-          <label>Price</label>
-          <input type="text" placeholder="$6,500">
+        <label>Description</label>
+        <textarea id="listDescription" placeholder="Condition, mileage/hours, known issues, reason for selling..."></textarea>
+        <label>Photos <span style="color:var(--off-white-dim); text-transform:none; font-family:'Inter';">(up to 20)</span></label>
+        <input type="file" id="listPhotos" accept="image/*" multiple>
+        <div class="helper" id="photoCountHelper">0 of 20 photos selected</div>
+        <label>Your Zip Code</label>
+        <input type="text" id="listZip" placeholder="08723" style="max-width:160px;">
+        <div class="contact-pref">
+          <label style="margin-top:0;">How should buyers reach you?</label>
+          <div class="radio-row"><input type="radio" name="contactPref" value="platform_only" checked> In-platform messages only (recommended)</div>
+          <div class="radio-row"><input type="radio" name="contactPref" value="platform_then_share"> In-platform, with option to share phone later</div>
+          <div class="radio-row"><input type="radio" name="contactPref" value="public_phone"> Show my phone number publicly</div>
         </div>
+        <button class="btn" id="publishBtn">Publish Listing</button>
+        <div id="listingMsg"></div>
       </div>
-      <label>Description</label>
-      <textarea placeholder="Condition, mileage/hours, known issues, reason for selling..."></textarea>
-      <label>Photos <span style="color:var(--off-white-dim); text-transform:none; font-family:'Inter';">(up to 20)</span></label>
-      <div class="dropzone">
-        <div class="icon">⬆</div>
-        <div class="main">Drag photos here or click to upload</div>
-        <div class="sub">JPG or PNG, up to 10MB each</div>
-      </div>
-      <div class="photo-grid">
-        <div class="photo-slot filled">IMG_01</div>
-        <div class="photo-slot filled">IMG_02</div>
-        <div class="photo-slot filled">IMG_03</div>
-        <div class="photo-slot filled">IMG_04</div>
-        <div class="photo-slot">+ Add</div>
-        <div class="photo-slot">+ Add</div>
-      </div>
-      <div class="helper">4 of 20 photos added</div>
-      <label>Your Zip Code</label>
-      <input type="text" placeholder="08723" style="max-width:160px;">
-      <div class="helper">Buyers will see your listing's approximate distance from their zip — not your exact address.</div>
-
-      <div class="contact-pref">
-        <label style="margin-top:0;">How should buyers reach you?</label>
-        <div class="radio-row"><input type="radio" name="contact" checked> In-platform messages only (recommended)</div>
-        <div class="radio-row"><input type="radio" name="contact"> In-platform messages, with option to share my phone once I choose to</div>
-        <div class="radio-row"><input type="radio" name="contact"> Show my phone number publicly on this listing</div>
-        <div class="note">We recommend keeping conversations in-platform until you're ready to meet — it keeps your personal contact info private and gives you a message history if something goes wrong.</div>
-      </div>
-
-      <button class="btn">Publish Listing</button>
-      <button class="btn btn-outline">Save as Draft</button>
     </div>
   </div>
 
-  <!-- PANEL 3: MESSAGES -->
   <div class="panel" id="messages">
     <div class="card">
-      <h2>Conversation — 2019 SeaDoo GTX</h2>
-      <div class="zip-badge">📍 Buyer is 4.2 mi away (08723)</div>
-      <div class="thread">
-        <div class="msg them">
-          <div class="msg-meta">MIKE T · 2:14 PM</div>
-          Hey is this still available? Any recent maintenance done?
-        </div>
-        <div class="msg me">
-          <div class="msg-meta">YOU · 2:31 PM</div>
-          Yep still have it. New impeller last month, runs great. Want to come see it this weekend?
-        </div>
-        <div class="msg them">
-          <div class="msg-meta">MIKE T · 2:35 PM</div>
-          Sounds good — Saturday morning work?
-        </div>
+      <h2>Messages</h2>
+      <div id="messagesLoggedOutNotice" class="helper">Log in to view your messages.</div>
+      <div id="messagesView" class="hidden">
+        <div class="helper" id="chatContextHelper">Click a listing in Browse to start or continue a conversation with its seller.</div>
+        <div class="thread" id="threadView"></div>
+        <label>Reply</label>
+        <textarea id="replyBox" style="min-height:60px;"></textarea>
+        <button class="btn" id="sendMsgBtn">Send Message</button>
       </div>
-      <label>Reply</label>
-      <textarea placeholder="Type a message..." style="min-height:60px;"></textarea>
-      <button class="btn">Send Message</button>
-      <div class="helper" style="margin-top:16px;">Once you've built trust with a buyer, you'll have the option to share your phone number directly from within this thread — it's never required upfront.</div>
     </div>
   </div>
 </div>
 
-<script>
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+  const SUPABASE_URL = 'https://tywhtvzkevhpogkvnueq.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_JFU-mwxs2PuQkDvhOFNsqw_Hm1ErJhd';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let currentUser = null;
+  let currentListingForChat = null;
+
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -199,6 +195,196 @@
       document.getElementById(tab.dataset.panel).classList.add('active');
     });
   });
+
+  async function refreshAuthUI() {
+    const { data: { user } } = await supabase.auth.getUser();
+    currentUser = user;
+    const statusEl = document.getElementById('authStatus');
+    if (user) {
+      statusEl.innerHTML = `${user.email} <button id="logoutBtn">Log Out</button>`;
+      document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        refreshAuthUI();
+      });
+      document.getElementById('loggedOutView').classList.add('hidden');
+      document.getElementById('loggedInView').classList.remove('hidden');
+      document.getElementById('listingLoggedOutNotice').classList.add('hidden');
+      document.getElementById('listingForm').classList.remove('hidden');
+      document.getElementById('messagesLoggedOutNotice').classList.add('hidden');
+      document.getElementById('messagesView').classList.remove('hidden');
+      loadProfile();
+    } else {
+      statusEl.textContent = 'Not logged in';
+      document.getElementById('loggedOutView').classList.remove('hidden');
+      document.getElementById('loggedInView').classList.add('hidden');
+      document.getElementById('listingLoggedOutNotice').classList.remove('hidden');
+      document.getElementById('listingForm').classList.add('hidden');
+      document.getElementById('messagesLoggedOutNotice').classList.remove('hidden');
+      document.getElementById('messagesView').classList.add('hidden');
+    }
+  }
+
+  document.getElementById('signupBtn').addEventListener('click', async () => {
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    const msgEl = document.getElementById('authMsg');
+    msgEl.textContent = '';
+    if (!email || !password) { msgEl.innerHTML = '<div class="error">Enter an email and password.</div>'; return; }
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) { msgEl.innerHTML = `<div class="error">${error.message}</div>`; return; }
+    msgEl.innerHTML = '<div class="success">Account created! Check your email to confirm, then log in.</div>';
+  });
+
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    const msgEl = document.getElementById('authMsg');
+    msgEl.textContent = '';
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) { msgEl.innerHTML = `<div class="error">${error.message}</div>`; return; }
+    msgEl.innerHTML = '<div class="success">Logged in!</div>';
+    refreshAuthUI();
+  });
+
+  async function loadProfile() {
+    if (!currentUser) return;
+    const { data } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
+    if (data) {
+      document.getElementById('profileName').value = data.full_name || '';
+      document.getElementById('profileZip').value = data.zip || '';
+      document.getElementById('profilePhone').value = data.phone || '';
+    }
+  }
+
+  document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+    const msgEl = document.getElementById('profileMsg');
+    const payload = {
+      id: currentUser.id,
+      full_name: document.getElementById('profileName').value.trim(),
+      zip: document.getElementById('profileZip').value.trim(),
+      phone: document.getElementById('profilePhone').value.trim()
+    };
+    const { error } = await supabase.from('profiles').upsert(payload);
+    msgEl.innerHTML = error ? `<div class="error">${error.message}</div>` : '<div class="success">Profile saved.</div>';
+  });
+
+  document.getElementById('listPhotos').addEventListener('change', (e) => {
+    const count = Math.min(e.target.files.length, 20);
+    document.getElementById('photoCountHelper').textContent = `${count} of 20 photos selected`;
+  });
+
+  document.getElementById('publishBtn').addEventListener('click', async () => {
+    const msgEl = document.getElementById('listingMsg');
+    msgEl.textContent = '';
+    if (!currentUser) { msgEl.innerHTML = '<div class="error">Log in first.</div>'; return; }
+
+    const title = document.getElementById('listTitle').value.trim();
+    const category = document.getElementById('listCategory').value;
+    const price = parseFloat(document.getElementById('listPrice').value) || null;
+    const description = document.getElementById('listDescription').value.trim();
+    const zip = document.getElementById('listZip').value.trim();
+    const contactPref = document.querySelector('input[name="contactPref"]:checked').value;
+    const files = Array.from(document.getElementById('listPhotos').files).slice(0, 20);
+
+    if (!title || !zip) { msgEl.innerHTML = '<div class="error">Title and zip code are required.</div>'; return; }
+
+    msgEl.innerHTML = '<div class="helper">Uploading photos...</div>';
+    const photoUrls = [];
+    for (const file of files) {
+      const path = `${currentUser.id}/${Date.now()}-${file.name}`;
+      const { error: uploadError } = await supabase.storage.from('listing-photos').upload(path, file);
+      if (uploadError) { msgEl.innerHTML = `<div class="error">Photo upload failed: ${uploadError.message}</div>`; return; }
+      const { data: publicUrlData } = supabase.storage.from('listing-photos').getPublicUrl(path);
+      photoUrls.push(publicUrlData.publicUrl);
+    }
+
+    const { error } = await supabase.from('listings').insert({
+      seller_id: currentUser.id, title, category, price, description, zip,
+      contact_pref: contactPref, photo_urls: photoUrls
+    });
+
+    if (error) { msgEl.innerHTML = `<div class="error">${error.message}</div>`; return; }
+    msgEl.innerHTML = '<div class="success">Listing published!</div>';
+    document.getElementById('listTitle').value = '';
+    document.getElementById('listPrice').value = '';
+    document.getElementById('listDescription').value = '';
+    document.getElementById('listZip').value = '';
+    document.getElementById('listPhotos').value = '';
+    document.getElementById('photoCountHelper').textContent = '0 of 20 photos selected';
+    loadListings();
+  });
+
+  async function loadListings() {
+    const grid = document.getElementById('listingGrid');
+    const { data, error } = await supabase.from('listings').select('*').order('created_at', { ascending: false });
+    if (error) { grid.innerHTML = `<div class="error">${error.message}</div>`; return; }
+    if (!data || data.length === 0) { grid.innerHTML = '<div class="helper">No listings yet — be the first!</div>'; return; }
+    grid.innerHTML = data.map(l => `
+      <div class="listing-card" data-id="${l.id}" data-seller="${l.seller_id}">
+        <div class="thumb">${l.photo_urls && l.photo_urls[0] ? `<img src="${l.photo_urls[0]}">` : 'No photo'}</div>
+        <div class="title">${escapeHtml(l.title)}</div>
+        <div class="price">${l.price ? '$' + Number(l.price).toLocaleString() : 'Price on request'}</div>
+        <div class="meta">${escapeHtml(l.category)} · ${escapeHtml(l.zip || '')}</div>
+      </div>
+    `).join('');
+    grid.querySelectorAll('.listing-card').forEach(card => {
+      card.addEventListener('click', () => {
+        if (!currentUser) { alert('Log in to message this seller.'); return; }
+        if (card.dataset.seller === currentUser.id) { alert("This is your own listing — you'll see buyer messages here once someone reaches out."); return; }
+        currentListingForChat = { id: card.dataset.id, sellerId: card.dataset.seller };
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelector('[data-panel="messages"]').classList.add('active');
+        document.getElementById('messages').classList.add('active');
+        document.getElementById('chatContextHelper').textContent = `Conversation about: ${l_title_lookup(card)}`;
+        loadThread(currentListingForChat.id, currentListingForChat.sellerId);
+      });
+    });
+  }
+
+  function l_title_lookup(card) {
+    return card.querySelector('.title').textContent;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  async function loadThread(listingId, otherUserId) {
+    const threadEl = document.getElementById('threadView');
+    const { data, error } = await supabase.from('messages')
+      .select('*')
+      .eq('listing_id', listingId)
+      .or(`and(sender_id.eq.${currentUser.id},recipient_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},recipient_id.eq.${currentUser.id})`)
+      .order('created_at', { ascending: true });
+    if (error) { threadEl.innerHTML = `<div class="error">${error.message}</div>`; return; }
+    threadEl.innerHTML = (data || []).map(m => `
+      <div class="msg ${m.sender_id === currentUser.id ? 'me' : 'them'}">
+        <div class="msg-meta">${new Date(m.created_at).toLocaleString()}</div>
+        ${escapeHtml(m.body)}
+      </div>
+    `).join('') || '<div class="helper">No messages yet — say hello.</div>';
+  }
+
+  document.getElementById('sendMsgBtn').addEventListener('click', async () => {
+    if (!currentUser || !currentListingForChat) { alert('Select a listing from Browse first.'); return; }
+    const body = document.getElementById('replyBox').value.trim();
+    if (!body) return;
+    const { error } = await supabase.from('messages').insert({
+      listing_id: currentListingForChat.id,
+      sender_id: currentUser.id,
+      recipient_id: currentListingForChat.sellerId,
+      body
+    });
+    if (error) { alert(error.message); return; }
+    document.getElementById('replyBox').value = '';
+    loadThread(currentListingForChat.id, currentListingForChat.sellerId);
+  });
+
+  refreshAuthUI();
+  loadListings();
 </script>
 </body>
 </html>
