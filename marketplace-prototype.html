@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legion Motorsports — Marketplace Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700;1,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal: #0a0a0a; --charcoal-2: #151515; --steel: #232323; --steel-line: #333333;
+    --red: #e31e24; --white: #ffffff; --off-white: #f2f2f0; --off-white-dim: #918f8c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--charcoal); color:var(--off-white); font-family:'Inter',sans-serif; padding:40px 20px; }
+  h1,h2,h3{ font-family:'Barlow Condensed'; font-weight:700; font-style:italic; text-transform:uppercase; letter-spacing:0.01em; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  .wrap{ max-width:920px; margin:0 auto; }
+  .badge{ display:inline-block; background:var(--red); color:var(--white); font-family:'JetBrains Mono'; font-size:0.65rem; padding:3px 8px; letter-spacing:0.06em; margin-bottom:10px; }
+  .page-title{ font-size:2rem; margin-bottom:6px; }
+  .page-sub{ color:var(--off-white-dim); font-size:0.9rem; margin-bottom:36px; }
+
+  .tabs{ display:flex; gap:2px; margin-bottom:28px; background:var(--steel-line); }
+  .tab{ flex:1; text-align:center; padding:14px; background:var(--charcoal-2); font-family:'Barlow Condensed'; font-weight:700; font-style:italic; text-transform:uppercase; letter-spacing:0.02em; cursor:pointer; color:var(--off-white-dim); font-size:1rem; }
+  .tab.active{ background:var(--charcoal); color:var(--red); }
+
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+
+  .card{ background:var(--charcoal-2); border:1px solid var(--steel-line); padding:32px; margin-bottom:24px; }
+  .card h2{ font-size:1.3rem; margin-bottom:20px; color:var(--white); }
+
+  label{ display:block; font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--red); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:8px; margin-top:18px; }
+  label:first-of-type{ margin-top:0; }
+  input[type=text], input[type=email], input[type=password], input[type=tel], select, textarea{
+    width:100%; background:var(--charcoal); border:1px solid var(--steel-line); color:var(--off-white);
+    padding:12px 14px; font-family:'Inter'; font-size:0.92rem;
+  }
+  textarea{ resize:vertical; min-height:80px; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:600px){ .row2{grid-template-columns:1fr;} }
+
+  .btn{ background:var(--red); color:var(--white); border:none; padding:14px 26px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em; font-size:0.85rem; cursor:pointer; margin-top:24px; }
+  .btn-outline{ background:transparent; border:1px solid var(--steel-line); color:var(--off-white); }
+
+  .helper{ font-size:0.78rem; color:var(--off-white-dim); margin-top:6px; }
+
+  /* photo upload dropzone */
+  .dropzone{
+    border:2px dashed var(--steel-line); background:var(--charcoal); padding:40px 20px;
+    text-align:center; margin-top:8px; cursor:pointer;
+  }
+  .dropzone:hover{ border-color:var(--red); }
+  .dropzone .icon{ font-size:1.8rem; color:var(--red); margin-bottom:10px; }
+  .dropzone .main{ font-weight:600; font-size:0.9rem; margin-bottom:4px; }
+  .dropzone .sub{ font-size:0.78rem; color:var(--off-white-dim); }
+  .photo-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:14px; }
+  .photo-slot{ aspect-ratio:1; background:var(--steel); border:1px solid var(--steel-line); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--off-white-dim); }
+  .photo-slot.filled{ background:linear-gradient(135deg, #3a3a3a, #262626); color:var(--off-white); }
+
+  /* contact preference block */
+  .contact-pref{ background:var(--charcoal); border:1px solid var(--steel-line); padding:20px; margin-top:20px; }
+  .contact-pref .note{ font-size:0.78rem; color:var(--off-white-dim); margin-top:10px; line-height:1.5; }
+  .radio-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:0.9rem; }
+  .radio-row input{ width:auto; accent-color:var(--red); }
+
+  /* message thread mockup */
+  .thread{ background:var(--charcoal); border:1px solid var(--steel-line); padding:20px; margin-top:10px; }
+  .msg{ max-width:75%; padding:10px 14px; margin-bottom:10px; font-size:0.85rem; }
+  .msg.them{ background:var(--steel); }
+  .msg.me{ background:var(--red); color:var(--white); margin-left:auto; }
+  .msg-meta{ font-family:'JetBrains Mono'; font-size:0.65rem; color:var(--off-white-dim); margin-bottom:4px; }
+
+  .zip-badge{ display:inline-flex; align-items:center; gap:6px; background:var(--charcoal); border:1px solid var(--steel-line); padding:6px 12px; font-family:'JetBrains Mono'; font-size:0.78rem; margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="badge">PROTOTYPE — NOT FUNCTIONAL YET</span>
+  <div class="page-title">Marketplace Sign-Up &amp; Listing Flow</div>
+  <div class="page-sub">A first look at how sellers create an account, upload photos, and message buyers — all in-platform, no personal contact info exposed.</div>
+
+  <div class="tabs">
+    <div class="tab active" data-panel="signup">1. Create Account</div>
+    <div class="tab" data-panel="listing">2. Create Listing</div>
+    <div class="tab" data-panel="messages">3. Messages</div>
+  </div>
+
+  <!-- PANEL 1: SIGN UP -->
+  <div class="panel active" id="signup">
+    <div class="card">
+      <h2>Create your seller account</h2>
+      <label>Full Name</label>
+      <input type="text" placeholder="Brandon Gonzalez">
+      <label>Email</label>
+      <input type="email" placeholder="you@example.com">
+      <div class="helper">Used for login &amp; account notifications only — never shown publicly on your listings.</div>
+      <label>Phone Number <span style="color:var(--off-white-dim); text-transform:none; font-family:'Inter';">(optional)</span></label>
+      <input type="tel" placeholder="(555) 555-5555">
+      <div class="helper">Only used for account recovery, unless you choose to share it with a specific buyer later.</div>
+      <div class="row2">
+        <div>
+          <label>Zip Code</label>
+          <input type="text" placeholder="08723">
+          <div class="helper">Shown publicly so buyers know roughly where your item is — exact address is never shown.</div>
+        </div>
+        <div>
+          <label>Password</label>
+          <input type="password" placeholder="••••••••">
+        </div>
+      </div>
+      <button class="btn">Create Account</button>
+    </div>
+  </div>
+
+  <!-- PANEL 2: CREATE LISTING -->
+  <div class="panel" id="listing">
+    <div class="card">
+      <h2>List an item</h2>
+      <label>Item Title</label>
+      <input type="text" placeholder="2019 SeaDoo GTX — Runs Great">
+      <div class="row2">
+        <div>
+          <label>Category</label>
+          <select><option>Jetski</option><option>Motorcycle / Dirt Bike</option><option>Snowmobile</option><option>Side-by-Side / UTV</option><option>ATV / Quad</option><option>Boat</option><option>Engine Block</option><option>Transmission</option><option>Other Part</option></select>
+        </div>
+        <div>
+          <label>Price</label>
+          <input type="text" placeholder="$6,500">
+        </div>
+      </div>
+      <label>Description</label>
+      <textarea placeholder="Condition, mileage/hours, known issues, reason for selling..."></textarea>
+      <label>Photos <span style="color:var(--off-white-dim); text-transform:none; font-family:'Inter';">(up to 20)</span></label>
+      <div class="dropzone">
+        <div class="icon">⬆</div>
+        <div class="main">Drag photos here or click to upload</div>
+        <div class="sub">JPG or PNG, up to 10MB each</div>
+      </div>
+      <div class="photo-grid">
+        <div class="photo-slot filled">IMG_01</div>
+        <div class="photo-slot filled">IMG_02</div>
+        <div class="photo-slot filled">IMG_03</div>
+        <div class="photo-slot filled">IMG_04</div>
+        <div class="photo-slot">+ Add</div>
+        <div class="photo-slot">+ Add</div>
+      </div>
+      <div class="helper">4 of 20 photos added</div>
+      <label>Your Zip Code</label>
+      <input type="text" placeholder="08723" style="max-width:160px;">
+      <div class="helper">Buyers will see your listing's approximate distance from their zip — not your exact address.</div>
+
+      <div class="contact-pref">
+        <label style="margin-top:0;">How should buyers reach you?</label>
+        <div class="radio-row"><input type="radio" name="contact" checked> In-platform messages only (recommended)</div>
+        <div class="radio-row"><input type="radio" name="contact"> In-platform messages, with option to share my phone once I choose to</div>
+        <div class="radio-row"><input type="radio" name="contact"> Show my phone number publicly on this listing</div>
+        <div class="note">We recommend keeping conversations in-platform until you're ready to meet — it keeps your personal contact info private and gives you a message history if something goes wrong.</div>
+      </div>
+
+      <button class="btn">Publish Listing</button>
+      <button class="btn btn-outline">Save as Draft</button>
+    </div>
+  </div>
+
+  <!-- PANEL 3: MESSAGES -->
+  <div class="panel" id="messages">
+    <div class="card">
+      <h2>Conversation — 2019 SeaDoo GTX</h2>
+      <div class="zip-badge">📍 Buyer is 4.2 mi away (08723)</div>
+      <div class="thread">
+        <div class="msg them">
+          <div class="msg-meta">MIKE T · 2:14 PM</div>
+          Hey is this still available? Any recent maintenance done?
+        </div>
+        <div class="msg me">
+          <div class="msg-meta">YOU · 2:31 PM</div>
+          Yep still have it. New impeller last month, runs great. Want to come see it this weekend?
+        </div>
+        <div class="msg them">
+          <div class="msg-meta">MIKE T · 2:35 PM</div>
+          Sounds good — Saturday morning work?
+        </div>
+      </div>
+      <label>Reply</label>
+      <textarea placeholder="Type a message..." style="min-height:60px;"></textarea>
+      <button class="btn">Send Message</button>
+      <div class="helper" style="margin-top:16px;">Once you've built trust with a buyer, you'll have the option to share your phone number directly from within this thread — it's never required upfront.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.panel).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
