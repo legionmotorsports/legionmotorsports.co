@@ -3,344 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Legion Motorsports</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Legion Motorsports — Marketplace Prototype</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700;1,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --charcoal: #0a0a0a;
-    --charcoal-2: #151515;
-    --steel: #232323;
-    --steel-line: #333333;
-    --orange: #e31e24;
-    --yellow: #ffffff;
-    --off-white: #f2f2f0;
-    --off-white-dim: #918f8c;
+    --charcoal: #0a0a0a; --charcoal-2: #151515; --steel: #232323; --steel-line: #333333;
+    --red: #e31e24; --white: #ffffff; --off-white: #f2f2f0; --off-white-dim: #918f8c;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background: var(--charcoal);
-    color: var(--off-white);
-    font-family:'Inter', sans-serif;
-    line-height:1.5;
-  }
-  h1,h2,h3, .display{
-    font-family:'Barlow Condensed', sans-serif;
-    font-weight:700;
-    font-style:italic;
-    text-transform:uppercase;
-    letter-spacing:0.01em;
-  }
+  body{ background:var(--charcoal); color:var(--off-white); font-family:'Inter',sans-serif; padding:40px 20px; }
+  h1,h2,h3{ font-family:'Barlow Condensed'; font-weight:700; font-style:italic; text-transform:uppercase; letter-spacing:0.01em; }
   .mono{ font-family:'JetBrains Mono', monospace; }
-  a{ color:inherit; text-decoration:none; }
-  img{max-width:100%; display:block;}
-  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px; }
+  .wrap{ max-width:920px; margin:0 auto; }
+  .badge{ display:inline-block; background:var(--red); color:var(--white); font-family:'JetBrains Mono'; font-size:0.65rem; padding:3px 8px; letter-spacing:0.06em; margin-bottom:10px; }
+  .page-title{ font-size:2rem; margin-bottom:6px; }
+  .page-sub{ color:var(--off-white-dim); font-size:0.9rem; margin-bottom:36px; }
 
-  /* diagonal hazard texture used sparingly as a divider accent */
-  .hazard-strip{
-    height:10px;
-    background: repeating-linear-gradient(135deg, var(--yellow) 0 18px, var(--charcoal) 18px 36px);
-  }
+  .tabs{ display:flex; gap:2px; margin-bottom:28px; background:var(--steel-line); }
+  .tab{ flex:1; text-align:center; padding:14px; background:var(--charcoal-2); font-family:'Barlow Condensed'; font-weight:700; font-style:italic; text-transform:uppercase; letter-spacing:0.02em; cursor:pointer; color:var(--off-white-dim); font-size:1rem; }
+  .tab.active{ background:var(--charcoal); color:var(--red); }
 
-  /* ===== NAV ===== */
-  header{
-    position:sticky; top:0; z-index:50;
-    background: rgba(26,29,31,0.92);
-    backdrop-filter: blur(6px);
-    border-bottom:1px solid var(--steel-line);
-  }
-  nav{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:18px 28px; max-width:1180px; margin:0 auto;
-  }
-  .logo{
-    font-family:'Barlow Condensed'; font-weight:800; font-style:italic; font-size:1.5rem;
-    letter-spacing:0.01em; text-transform:uppercase;
-    display:flex; align-items:baseline; gap:2px;
-  }
-  .logo .lm-l{ color:var(--orange); }
-  .logo .lm-m{ color:var(--off-white); }
-  .logo .tag{
-    font-family:'Barlow Condensed'; font-style:italic; font-weight:700; font-size:1rem;
-    color:var(--orange); letter-spacing:0.02em; margin-left:6px;
-  }
-  .nav-links{ display:flex; gap:32px; font-size:0.85rem; font-weight:500; text-transform:uppercase; letter-spacing:0.04em;}
-  .nav-links a{ color:var(--off-white-dim); transition:color .15s; }
-  .nav-links a:hover{ color:var(--orange); }
-  .nav-cta{
-    background:var(--orange); color:var(--charcoal);
-    padding:10px 20px; font-weight:600; font-size:0.82rem;
-    text-transform:uppercase; letter-spacing:0.04em;
-    border:none; cursor:pointer;
-  }
-  @media(max-width:760px){ .nav-links{display:none;} }
+  .panel{ display:none; }
+  .panel.active{ display:block; }
 
-  /* ===== HERO ===== */
-  .hero{
-    padding:90px 28px 70px;
-    max-width:1180px; margin:0 auto;
-    display:grid; grid-template-columns:1.1fr 0.9fr; gap:50px; align-items:center;
-  }
-  @media(max-width:900px){ .hero{grid-template-columns:1fr; padding-top:56px;} }
-  .eyebrow{
-    font-family:'JetBrains Mono'; font-size:0.78rem; color:var(--yellow);
-    letter-spacing:0.08em; margin-bottom:18px; display:flex; align-items:center; gap:10px;
-  }
-  .eyebrow::before{ content:''; width:26px; height:2px; background:var(--yellow); display:inline-block;}
-  .hero h1{
-    font-size:3.6rem; line-height:1.02; font-weight:700; margin-bottom:22px;
-  }
-  @media(max-width:900px){ .hero h1{font-size:2.5rem;} }
-  .hero h1 .accent{ color:var(--orange); }
-  .hero p{ color:var(--off-white-dim); font-size:1.05rem; max-width:480px; margin-bottom:34px; }
-  .btn-row{ display:flex; gap:16px; flex-wrap:wrap; }
-  .btn-primary{
-    background:var(--orange); color:var(--charcoal); padding:15px 28px;
-    font-weight:600; text-transform:uppercase; letter-spacing:0.04em; font-size:0.88rem;
-    border:none; cursor:pointer;
-  }
-  .btn-secondary{
-    background:transparent; color:var(--off-white); padding:15px 28px;
-    font-weight:600; text-transform:uppercase; letter-spacing:0.04em; font-size:0.88rem;
-    border:1px solid var(--steel-line); cursor:pointer;
-  }
-  .btn-secondary:hover{ border-color:var(--orange); color:var(--orange); }
+  .card{ background:var(--charcoal-2); border:1px solid var(--steel-line); padding:32px; margin-bottom:24px; }
+  .card h2{ font-size:1.3rem; margin-bottom:20px; color:var(--white); }
 
-  /* signature element: a "build tag" — like a torn parts/shipping tag */
-  .build-tag{
-    background:var(--charcoal-2);
-    border:1px solid var(--steel-line);
-    padding:0;
-    position:relative;
-    clip-path: polygon(0 12%, 12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%);
+  label{ display:block; font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--red); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:8px; margin-top:18px; }
+  label:first-of-type{ margin-top:0; }
+  input[type=text], input[type=email], input[type=password], input[type=tel], select, textarea{
+    width:100%; background:var(--charcoal); border:1px solid var(--steel-line); color:var(--off-white);
+    padding:12px 14px; font-family:'Inter'; font-size:0.92rem;
   }
-  .build-tag-inner{ padding:26px 28px; }
-  .build-tag .hole{
-    position:absolute; top:20px; right:20px;
-    width:14px; height:14px; border-radius:50%;
-    background:var(--charcoal); border:1px solid var(--steel-line);
-  }
-  .build-tag-label{ font-family:'JetBrains Mono'; font-size:0.68rem; color:var(--yellow); letter-spacing:0.08em; margin-bottom:14px;}
-  .build-tag-row{
-    display:flex; justify-content:space-between; padding:9px 0;
-    border-bottom:1px dashed var(--steel-line);
-    font-size:0.85rem;
-  }
-  .build-tag-row:last-child{ border-bottom:none; }
-  .build-tag-row .k{ color:var(--off-white-dim); }
-  .build-tag-row .v{ font-family:'JetBrains Mono'; color:var(--off-white); }
+  textarea{ resize:vertical; min-height:80px; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:600px){ .row2{grid-template-columns:1fr;} }
 
-  /* ===== SECTION HEADERS ===== */
-  .section{ padding:80px 28px; }
-  .section-head{ max-width:1180px; margin:0 auto 44px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; }
-  .section-head h2{ font-size:2.1rem; font-weight:600; }
-  .section-head p{ color:var(--off-white-dim); max-width:420px; font-size:0.95rem; }
-  .section-num{ font-family:'JetBrains Mono'; color:var(--steel-line); font-size:0.9rem; }
+  .btn{ background:var(--red); color:var(--white); border:none; padding:14px 26px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em; font-size:0.85rem; cursor:pointer; margin-top:24px; }
+  .btn-outline{ background:transparent; border:1px solid var(--steel-line); color:var(--off-white); }
 
-  /* ===== CATEGORY GRID (parts/gear) ===== */
-  .cat-grid{ max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:var(--steel-line);}
-  @media(max-width:900px){ .cat-grid{grid-template-columns:repeat(2,1fr);} }
-  .cat-card{
-    background:var(--charcoal-2); padding:32px 24px; min-height:190px;
-    display:flex; flex-direction:column; justify-content:space-between;
-    transition:background .15s;
-  }
-  .cat-card:hover{ background:var(--steel); }
-  .cat-card .cat-index{ font-family:'JetBrains Mono'; font-size:0.72rem; color:var(--orange); }
-  .cat-card h3{ font-size:1.15rem; font-weight:600; margin-top:22px; }
-  .cat-card span.desc{ display:block; margin-top:8px; color:var(--off-white-dim); font-size:0.82rem; text-transform:none; letter-spacing:0; font-family:'Inter';}
+  .helper{ font-size:0.78rem; color:var(--off-white-dim); margin-top:6px; }
 
-  /* ===== MARKETPLACE TEASER ===== */
-  .marketplace{
-    background:var(--charcoal-2);
-    border-top:1px solid var(--steel-line);
-    border-bottom:1px solid var(--steel-line);
+  /* photo upload dropzone */
+  .dropzone{
+    border:2px dashed var(--steel-line); background:var(--charcoal); padding:40px 20px;
+    text-align:center; margin-top:8px; cursor:pointer;
   }
-  .mp-wrap{ max-width:1180px; margin:0 auto; padding:80px 28px; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
-  @media(max-width:900px){ .mp-wrap{grid-template-columns:1fr;} }
-  .mp-wrap h2{ font-size:2.1rem; margin-bottom:18px; }
-  .mp-wrap p{ color:var(--off-white-dim); margin-bottom:26px; max-width:460px; }
-  .zip-demo{
-    background:var(--charcoal); border:1px solid var(--steel-line); padding:26px;
-  }
-  .zip-demo-label{ font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--yellow); letter-spacing:0.06em; margin-bottom:14px;}
-  .zip-input-row{ display:flex; gap:10px; margin-bottom:20px; }
-  .zip-input-row input{
-    flex:1; background:var(--charcoal-2); border:1px solid var(--steel-line); color:var(--off-white);
-    padding:12px 14px; font-family:'JetBrains Mono'; font-size:0.9rem;
-  }
-  .zip-input-row button{
-    background:var(--orange); color:var(--charcoal); border:none; padding:0 18px;
-    font-weight:600; text-transform:uppercase; font-size:0.78rem; letter-spacing:0.03em; cursor:pointer;
-  }
-  .listing-row{ display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid var(--steel-line); font-size:0.85rem;}
-  .listing-row .dist{ color:var(--off-white-dim); font-family:'JetBrains Mono'; font-size:0.78rem;}
+  .dropzone:hover{ border-color:var(--red); }
+  .dropzone .icon{ font-size:1.8rem; color:var(--red); margin-bottom:10px; }
+  .dropzone .main{ font-weight:600; font-size:0.9rem; margin-bottom:4px; }
+  .dropzone .sub{ font-size:0.78rem; color:var(--off-white-dim); }
+  .photo-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:14px; }
+  .photo-slot{ aspect-ratio:1; background:var(--steel); border:1px solid var(--steel-line); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--off-white-dim); }
+  .photo-slot.filled{ background:linear-gradient(135deg, #3a3a3a, #262626); color:var(--off-white); }
 
-  /* ===== YOUTUBE TIE-IN ===== */
-  .yt{ max-width:1180px; margin:0 auto; padding:80px 28px; display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
-  @media(max-width:900px){ .yt{grid-template-columns:1fr;} }
-  .yt-embed{
-    aspect-ratio:16/10; background:var(--steel); border:1px solid var(--steel-line);
-    overflow:hidden;
-  }
-  .yt-embed iframe{ width:100%; height:100%; border:0; display:block; }
-  .yt h2{ font-size:2.1rem; margin-bottom:16px; }
-  .yt p{ color:var(--off-white-dim); margin-bottom:24px; max-width:480px; }
+  /* contact preference block */
+  .contact-pref{ background:var(--charcoal); border:1px solid var(--steel-line); padding:20px; margin-top:20px; }
+  .contact-pref .note{ font-size:0.78rem; color:var(--off-white-dim); margin-top:10px; line-height:1.5; }
+  .radio-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:0.9rem; }
+  .radio-row input{ width:auto; accent-color:var(--red); }
 
-  /* ===== FOOTER ===== */
-  footer{ border-top:1px solid var(--steel-line); padding:40px 28px; }
-  .footer-wrap{ max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; align-items:center;}
-  .footer-wrap .mono{ color:var(--off-white-dim); font-size:0.78rem; }
+  /* message thread mockup */
+  .thread{ background:var(--charcoal); border:1px solid var(--steel-line); padding:20px; margin-top:10px; }
+  .msg{ max-width:75%; padding:10px 14px; margin-bottom:10px; font-size:0.85rem; }
+  .msg.them{ background:var(--steel); }
+  .msg.me{ background:var(--red); color:var(--white); margin-left:auto; }
+  .msg-meta{ font-family:'JetBrains Mono'; font-size:0.65rem; color:var(--off-white-dim); margin-bottom:4px; }
+
+  .zip-badge{ display:inline-flex; align-items:center; gap:6px; background:var(--charcoal); border:1px solid var(--steel-line); padding:6px 12px; font-family:'JetBrains Mono'; font-size:0.78rem; margin-top:6px;}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <span class="badge">PROTOTYPE — NOT FUNCTIONAL YET</span>
+  <div class="page-title">Marketplace Sign-Up &amp; Listing Flow</div>
+  <div class="page-sub">A first look at how sellers create an account, upload photos, and message buyers — all in-platform, no personal contact info exposed.</div>
 
-<header>
-  <nav>
-    <div class="logo"><span class="lm-l">L</span><span class="lm-m">M</span> <span class="tag">LEGION MOTORSPORTS</span></div>
-    <div class="nav-links">
-      <a href="#parts">Parts</a>
-      <a href="#gear">Gear</a>
-      <a href="#marketplace">Marketplace</a>
-      <a href="#youtube">Channel</a>
-    </div>
-    <a href="#parts" class="nav-cta" style="display:inline-block; text-decoration:none;">Shop Now</a>
-  </nav>
-</header>
+  <div class="tabs">
+    <div class="tab active" data-panel="signup">1. Create Account</div>
+    <div class="tab" data-panel="listing">2. Create Listing</div>
+    <div class="tab" data-panel="messages">3. Messages</div>
+  </div>
 
-<div class="hazard-strip"></div>
-
-<section class="hero">
-  <div>
-    <div class="eyebrow">BUILT FOR THE ROAD.</div>
-    <h1>Ready for <span class="accent">any challenge.</span></h1>
-    <p>Belts, filters, oil, and gear for Can-Am, side-by-sides, jetskis, and quads — shipped fast, priced fair. Plus a marketplace to buy and sell used machines near you.</p>
-    <div class="btn-row">
-      <a href="#parts" class="btn-primary" style="display:inline-block; text-decoration:none;">Shop Parts &amp; Gear</a>
-      <a href="#marketplace" class="btn-secondary" style="display:inline-block; text-decoration:none;">Browse Marketplace</a>
+  <!-- PANEL 1: SIGN UP -->
+  <div class="panel active" id="signup">
+    <div class="card">
+      <h2>Create your seller account</h2>
+      <label>Full Name</label>
+      <input type="text" placeholder="Brandon Gonzalez">
+      <label>Email</label>
+      <input type="email" placeholder="you@example.com">
+      <div class="helper">Used for login &amp; account notifications only — never shown publicly on your listings.</div>
+      <label>Phone Number <span style="color:var(--off-white-dim); text-transform:none; font-family:'Inter';">(optional)</span></label>
+      <input type="tel" placeholder="(555) 555-5555">
+      <div class="helper">Only used for account recovery, unless you choose to share it with a specific buyer later.</div>
+      <div class="row2">
+        <div>
+          <label>Zip Code</label>
+          <input type="text" placeholder="08723">
+          <div class="helper">Shown publicly so buyers know roughly where your item is — exact address is never shown.</div>
+        </div>
+        <div>
+          <label>Password</label>
+          <input type="password" placeholder="••••••••">
+        </div>
+      </div>
+      <button class="btn">Create Account</button>
     </div>
   </div>
-  <div class="build-tag">
-    <div class="build-tag-inner">
-      <div class="hole"></div>
-      <div class="build-tag-label">// SAMPLE BUILD SHEET</div>
-      <div class="build-tag-row"><span class="k">Item</span><span class="v">Maverick X3 Belt</span></div>
-      <div class="build-tag-row"><span class="k">Fitment</span><span class="v">2020–2026</span></div>
-      <div class="build-tag-row"><span class="k">Ships</span><span class="v">1–2 Days</span></div>
-      <div class="build-tag-row"><span class="k">Price</span><span class="v">$149.00</span></div>
-      <div class="build-tag-row"><span class="k">Status</span><span class="v" style="color:var(--yellow);">IN STOCK</span></div>
-    </div>
-  </div>
-</section>
 
-<section class="section" id="parts">
-  <div class="section-head">
-    <div>
-      <h2>Shop by category</h2>
-      <p>Start with what wears out first — the parts that keep you on the trail, not in the shop.</p>
-    </div>
-    <div class="section-num">01 / CATALOG</div>
-  </div>
-  <div class="cat-grid">
-    <div class="cat-card">
-      <span class="cat-index">P-01</span>
-      <div>
-        <h3>Belts</h3>
-        <span class="desc">Can-Am, Polaris &amp; UTV drive belts</span>
+  <!-- PANEL 2: CREATE LISTING -->
+  <div class="panel" id="listing">
+    <div class="card">
+      <h2>List an item</h2>
+      <label>Item Title</label>
+      <input type="text" placeholder="2019 SeaDoo GTX — Runs Great">
+      <div class="row2">
+        <div>
+          <label>Category</label>
+          <select><option>Jetski</option><option>Motorcycle / Dirt Bike</option><option>Snowmobile</option><option>Side-by-Side / UTV</option><option>ATV / Quad</option><option>Boat</option><option>Engine Block</option><option>Transmission</option><option>Other Part</option></select>
+        </div>
+        <div>
+          <label>Price</label>
+          <input type="text" placeholder="$6,500">
+        </div>
       </div>
-    </div>
-    <div class="cat-card">
-      <span class="cat-index">P-02</span>
-      <div>
-        <h3>Oil &amp; Fluids</h3>
-        <span class="desc">Motul, Maxima, XPS synthetic</span>
+      <label>Description</label>
+      <textarea placeholder="Condition, mileage/hours, known issues, reason for selling..."></textarea>
+      <label>Photos <span style="color:var(--off-white-dim); text-transform:none; font-family:'Inter';">(up to 20)</span></label>
+      <div class="dropzone">
+        <div class="icon">⬆</div>
+        <div class="main">Drag photos here or click to upload</div>
+        <div class="sub">JPG or PNG, up to 10MB each</div>
       </div>
-    </div>
-    <div class="cat-card">
-      <span class="cat-index">P-03</span>
-      <div>
-        <h3>Filters</h3>
-        <span class="desc">Oil &amp; air filters, OEM equivalent</span>
+      <div class="photo-grid">
+        <div class="photo-slot filled">IMG_01</div>
+        <div class="photo-slot filled">IMG_02</div>
+        <div class="photo-slot filled">IMG_03</div>
+        <div class="photo-slot filled">IMG_04</div>
+        <div class="photo-slot">+ Add</div>
+        <div class="photo-slot">+ Add</div>
       </div>
-    </div>
-    <div class="cat-card">
-      <span class="cat-index">P-04</span>
-      <div>
-        <h3>Chains &amp; Sprockets</h3>
-        <span class="desc">Dirt bike &amp; ATV drivetrain</span>
-      </div>
-    </div>
-    <div class="cat-card" id="gear">
-      <span class="cat-index">G-01</span>
-      <div>
-        <h3>Goggles</h3>
-        <span class="desc">Anti-fog, multiple tints</span>
-      </div>
-    </div>
-    <div class="cat-card">
-      <span class="cat-index">G-02</span>
-      <div>
-        <h3>Gloves</h3>
-        <span class="desc">Off-road riding gloves, S–XXL</span>
-      </div>
-    </div>
-    <div class="cat-card">
-      <span class="cat-index">P-05</span>
-      <div>
-        <h3>Jetski Parts</h3>
-        <span class="desc">Impellers, wear rings, SeaDoo</span>
-      </div>
-    </div>
-    <div class="cat-card">
-      <span class="cat-index">--</span>
-      <div>
-        <h3>Full Catalog</h3>
-        <span class="desc">Browse everything in stock</span>
-      </div>
-    </div>
-  </div>
-</section>
+      <div class="helper">4 of 20 photos added</div>
+      <label>Your Zip Code</label>
+      <input type="text" placeholder="08723" style="max-width:160px;">
+      <div class="helper">Buyers will see your listing's approximate distance from their zip — not your exact address.</div>
 
-<section class="marketplace" id="marketplace">
-  <div class="mp-wrap">
-    <div>
-      <div class="eyebrow">LOCAL &amp; PEER-TO-PEER</div>
-      <h2>Buy &amp; sell near you</h2>
-      <p>Selling an old engine block, a jetski you don't ride anymore, or a whole quad? List it by zip code and connect with riders nearby — no shipping required.</p>
-      <button class="btn-primary">Start a Listing</button>
-    </div>
-    <div class="zip-demo">
-      <div class="zip-demo-label">// FIND LISTINGS NEAR YOU</div>
-      <div class="zip-input-row">
-        <input type="text" placeholder="Enter zip code" value="08723" readonly>
-        <button>Search</button>
+      <div class="contact-pref">
+        <label style="margin-top:0;">How should buyers reach you?</label>
+        <div class="radio-row"><input type="radio" name="contact" checked> In-platform messages only (recommended)</div>
+        <div class="radio-row"><input type="radio" name="contact"> In-platform messages, with option to share my phone once I choose to</div>
+        <div class="radio-row"><input type="radio" name="contact"> Show my phone number publicly on this listing</div>
+        <div class="note">We recommend keeping conversations in-platform until you're ready to meet — it keeps your personal contact info private and gives you a message history if something goes wrong.</div>
       </div>
-      <div class="listing-row"><span>2019 SeaDoo GTX — Runs great</span><span class="dist">4.2 mi</span></div>
-      <div class="listing-row"><span>Can-Am Rotax engine block</span><span class="dist">7.8 mi</span></div>
-      <div class="listing-row"><span>Honda CRF250 — Needs clutch</span><span class="dist">11.1 mi</span></div>
+
+      <button class="btn">Publish Listing</button>
+      <button class="btn btn-outline">Save as Draft</button>
     </div>
   </div>
-</section>
 
-<section class="yt" id="youtube">
-  <div class="yt-embed">
-    <iframe src="https://www.youtube.com/embed/OFnde6R1efw" title="Latest Legion Motorsports video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <!-- PANEL 3: MESSAGES -->
+  <div class="panel" id="messages">
+    <div class="card">
+      <h2>Conversation — 2019 SeaDoo GTX</h2>
+      <div class="zip-badge">📍 Buyer is 4.2 mi away (08723)</div>
+      <div class="thread">
+        <div class="msg them">
+          <div class="msg-meta">MIKE T · 2:14 PM</div>
+          Hey is this still available? Any recent maintenance done?
+        </div>
+        <div class="msg me">
+          <div class="msg-meta">YOU · 2:31 PM</div>
+          Yep still have it. New impeller last month, runs great. Want to come see it this weekend?
+        </div>
+        <div class="msg them">
+          <div class="msg-meta">MIKE T · 2:35 PM</div>
+          Sounds good — Saturday morning work?
+        </div>
+      </div>
+      <label>Reply</label>
+      <textarea placeholder="Type a message..." style="min-height:60px;"></textarea>
+      <button class="btn">Send Message</button>
+      <div class="helper" style="margin-top:16px;">Once you've built trust with a buyer, you'll have the option to share your phone number directly from within this thread — it's never required upfront.</div>
+    </div>
   </div>
-  <div>
-    <div class="eyebrow">THE CHANNEL</div>
-    <h2>Watch it get rebuilt on Legion Motorsports</h2>
-    <p>Every teardown, repair, and flip lands on YouTube first — see the parts in this store get used in the builds you're watching.</p>
-    <a href="https://www.youtube.com/@Legionmotorsports" target="_blank" class="btn-secondary" style="display:inline-block;">Watch on YouTube</a>
-  </div>
-</section>
+</div>
 
-<footer>
-  <div class="footer-wrap">
-    <div class="logo" style="font-size:1.1rem;"><span class="lm-l">L</span><span class="lm-m">M</span> <span class="tag">LEGION MOTORSPORTS</span></div>
-    <span class="mono">legionmotorsports.co — Brick, NJ</span>
-  </div>
-</footer>
-
+<script>
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.panel).classList.add('active');
+    });
+  });
+</script>
 </body>
 </html>
