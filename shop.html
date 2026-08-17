@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legion Motorsports — Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700;1,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal: #0a0a0a; --charcoal-2: #151515; --steel: #232323; --steel-line: #333333;
+    --red: #e31e24; --white: #ffffff; --off-white: #f2f2f0; --off-white-dim: #918f8c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--charcoal); color:var(--off-white); font-family:'Inter',sans-serif; }
+  h1,h2,h3{ font-family:'Barlow Condensed'; font-weight:700; font-style:italic; text-transform:uppercase; letter-spacing:0.01em; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px; }
+
+  header{ position:sticky; top:0; z-index:50; background:rgba(10,10,10,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--steel-line); }
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 28px; max-width:1180px; margin:0 auto; }
+  .logo{ font-family:'Barlow Condensed'; font-weight:800; font-style:italic; font-size:1.5rem; letter-spacing:0.01em; text-transform:uppercase; display:flex; align-items:baseline; gap:2px; }
+  .logo .lm-l{ color:var(--red); } .logo .lm-m{ color:var(--off-white); }
+  .logo .tag{ font-family:'Barlow Condensed'; font-style:italic; font-weight:700; font-size:1rem; color:var(--red); letter-spacing:0.02em; margin-left:6px; }
+  .back-link{ font-family:'JetBrains Mono'; font-size:0.78rem; color:var(--off-white-dim); }
+  .back-link:hover{ color:var(--red); }
+
+  .page-head{ padding:60px 28px 40px; max-width:1180px; margin:0 auto; }
+  .eyebrow{ font-family:'JetBrains Mono'; font-size:0.78rem; color:var(--white); letter-spacing:0.08em; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+  .eyebrow::before{ content:''; width:26px; height:2px; background:var(--red); display:inline-block; }
+  .page-head h1{ font-size:2.6rem; margin-bottom:14px; }
+  .page-head p{ color:var(--off-white-dim); max-width:520px; }
+
+  .section{ padding:20px 28px 70px; max-width:1180px; margin:0 auto; }
+  .section h2{ font-size:1.5rem; margin-bottom:6px; }
+  .section .sub{ color:var(--off-white-dim); font-size:0.85rem; margin-bottom:24px; }
+
+  .product-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  @media(max-width:900px){ .product-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:560px){ .product-grid{grid-template-columns:1fr;} }
+
+  .product-slot{
+    background:var(--charcoal-2); border:1px solid var(--steel-line); padding:24px;
+    display:flex; flex-direction:column; justify-content:space-between; min-height:220px;
+  }
+  .product-slot .placeholder-icon{ font-size:1.5rem; color:var(--steel-line); margin-bottom:14px; }
+  .product-slot .placeholder-label{ font-family:'JetBrains Mono'; font-size:0.72rem; color:var(--off-white-dim); letter-spacing:0.04em; text-transform:uppercase; }
+  .product-slot .placeholder-name{ font-size:1rem; font-weight:600; margin-top:8px; }
+  .product-slot .buy-button-embed{ margin-top:16px; }
+
+  footer{ border-top:1px solid var(--steel-line); padding:40px 28px; }
+  .footer-wrap{ max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; align-items:center; }
+  .footer-wrap .mono{ color:var(--off-white-dim); font-size:0.78rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="lm-l">L</span><span class="lm-m">M</span> <span class="tag">LEGION MOTORSPORTS</span></div>
+    <a href="index.html" class="back-link">&larr; Back to Home</a>
+  </nav>
+</header>
+
+<div class="page-head">
+  <div class="eyebrow">FULL CATALOG</div>
+  <h1>Shop Parts &amp; Gear</h1>
+  <p>Real products load here as they go live in Shopify — each slot below is wired to receive a working Buy Button.</p>
+</div>
+
+<div class="section" id="belts">
+  <h2>Belts</h2>
+  <div class="sub">Can-Am, Polaris &amp; UTV drive belts</div>
+  <div class="product-grid">
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+  </div>
+</div>
+
+<div class="section" id="oil">
+  <h2>Oil &amp; Fluids</h2>
+  <div class="sub">Motul, Maxima, XPS synthetic</div>
+  <div class="product-grid">
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+  </div>
+</div>
+
+<div class="section" id="filters">
+  <h2>Filters</h2>
+  <div class="sub">Oil &amp; air filters, OEM equivalent</div>
+  <div class="product-grid">
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+  </div>
+</div>
+
+<div class="section" id="chains">
+  <h2>Chains &amp; Sprockets</h2>
+  <div class="sub">Dirt bike &amp; ATV drivetrain</div>
+  <div class="product-grid">
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+  </div>
+</div>
+
+<div class="section" id="gear">
+  <h2>Gear</h2>
+  <div class="sub">Goggles, gloves &amp; riding apparel</div>
+  <div class="product-grid">
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+  </div>
+</div>
+
+<div class="section" id="jetski">
+  <h2>Jetski Parts</h2>
+  <div class="sub">Impellers, wear rings, SeaDoo</div>
+  <div class="product-grid">
+    <div class="product-slot"><div><div class="placeholder-icon">＋</div><div class="placeholder-label">Awaiting product</div></div></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-wrap">
+    <div class="logo" style="font-size:1.1rem;"><span class="lm-l">L</span><span class="lm-m">M</span> <span class="tag">LEGION MOTORSPORTS</span></div>
+    <span class="mono">legionmotorsports.co — Brick, NJ</span>
+  </div>
+</footer>
+
+</body>
+</html>
